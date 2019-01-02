@@ -28,3 +28,37 @@ private TreeNode helper(int postEnd, int inStart, int inEnd, int[] postorder, in
     return node;
     }
 }
+
+
+/**
+*Better sample solution
+*/
+// class Solution {
+//     public TreeNode buildTree(int[] inorder, int[] postorder) {
+//         int[] inIdx = new int[1], postIdx = new int[1]; // use array so it can pass by reference
+        
+//         postIdx[0] = postorder.length-1;
+        
+//         inIdx[0] = inorder.length-1;
+        
+//         return helper(inorder, inIdx, postorder, postIdx, null);
+        
+//     }
+//     // finish node means end of current subtree
+//     // for example, postorder = [9,15,7,20,3], numbers just before 3 is it's right subtree (20, 7, 15), and their finish node is 3.
+//     private TreeNode helper(int[] inorder, int[] inIdx, int[] postorder, int[] postIdx, TreeNode finish) {
+//         if (postIdx[0] < 0 || (finish != null && inorder[inIdx[0]] == finish.val)) {
+//             return null;
+//         }
+        
+//         TreeNode root = new TreeNode(postorder[postIdx[0]--]);
+        
+//         root.right = helper(inorder, inIdx, postorder, postIdx, root);
+        
+//         inIdx[0]--;
+        
+//         root.left = helper(inorder, inIdx, postorder, postIdx, finish);
+        
+//         return root;
+//     }
+// }
