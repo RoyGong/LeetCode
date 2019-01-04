@@ -1,0 +1,42 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        
+        if (lists == null || lists.length == 0) return null;
+        
+        ListNode head = new ListNode(0);
+        ListNode curr = head;
+        int k = lists.length;
+
+        // 用priorityqueue实现minheap，需要重构compare函数
+        PriorityQueue<ListNode> queue = new PriorityQueue<>(new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode node1, ListNode node2) {
+            return node1.val - node2.val;
+            }
+        });
+        // 初始化minheap，将列表中的k个链表的首个结点放入minheap
+        for (int i = 0; i < k; i++) {
+            if (lists[i] != null) {
+                queue.add(lists[i]);
+            }
+        }
+        // 当minheap不为空时
+        while (queue.size() != 0) {
+            // 从优先队列中取出一个最小的
+            ListNode node = queue.poll();
+            curr.next = node;
+            curr = curr.next;
+            // 如果取出的元素所在队列得下个结点不为空，将其加入minheap
+            if (node.next != null) queue.add(node.next);
+        }
+        return head.next; 
+    }
+}
