@@ -1,0 +1,41 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+
+        int len = nums.length;
+        int posProd = 1;
+        int negProd = 1;
+        if(nums[0] > 0) posProd = nums[0];
+        if(nums[0] < 0) negProd = nums[0];
+        
+        int max = nums[0];
+        if(len == 1) return max;
+        
+        for(int i = 1; i < len; i++){
+            
+            if(nums[i] == 0){
+                posProd = 1;
+                negProd = 1;
+                max = Math.max(max, 0);
+            }
+            
+            else if(nums[i] > 0){
+                posProd = posProd * nums[i];
+                negProd = negProd * nums[i];
+                max = Math.max(max, posProd);
+            }
+            
+            else {
+                int temp = negProd;
+                negProd = posProd * nums[i];
+                // temp == original negProd == 1 
+                // case 1: previous element is the start point and it is > 0
+                // case 2: previous element = 0
+                // case 3: extension of case 1 and 2
+                // At this point posProd has no meaning and should be set to 1 for the convenience of next update
+                posProd = temp < 0 ? temp * nums[i] : 1;
+                max = temp < 0 ? Math.max(max, posProd) : Math.max(max, 0);
+            }
+        }
+        return max;
+    }
+}
