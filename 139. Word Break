@@ -1,0 +1,22 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        boolean[] dp = new boolean[n+1];
+
+        for(int i = 1; i < n; i++) dp[i] = false;
+        dp[0] = true;
+
+        for(int i = 0; i < n; i++){
+            for(String word : wordDict){
+                int len = word.length();
+                // Note: String.equals() check the value of two strings while == check the reference.
+                if(dp[i] && i + len <= n && s.substring(i, i+len).equals(word)){
+                    dp[i + len] = true;
+                    // System.out.println("In loop #" + i + ", dp" + (i+len) + " = " + dp[i + len]);
+                }
+            }
+            
+        }
+        return dp[n];
+    }
+}
