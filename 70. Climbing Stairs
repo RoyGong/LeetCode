@@ -1,0 +1,18 @@
+class Solution {
+    public int climbStairs(int n) {
+        // Fibonacci problem
+        // dp faster than recurssion
+        
+        // initialization for 0 step case and 1 steps case
+        int a = 1;
+        int b = 1;
+        if(n == 1) return 1;
+        
+        for(int i = 2; i < n; i++){
+            int temp = a;
+            a = b;
+            b = temp + b;
+        }   
+        return a + b;
+    }
+}
