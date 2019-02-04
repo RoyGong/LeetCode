@@ -7,10 +7,11 @@ class Solution {
         dp[0] = true;
 
         for(int i = 0; i < n; i++){
+            if(dp[i] == false) continue;
             for(String word : wordDict){
                 int len = word.length();
                 // Note: String.equals() check the value of two strings while == check the reference.
-                if(dp[i] && i + len <= n && s.substring(i, i+len).equals(word)){
+                if(i + len <= n && s.substring(i, i+len).equals(word)){
                     dp[i + len] = true;
                     // System.out.println("In loop #" + i + ", dp" + (i+len) + " = " + dp[i + len]);
                 }
