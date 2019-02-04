@@ -1,0 +1,34 @@
+class Solution {
+    public int minSwap(int[] A, int[] B) {
+        int n = A.length;
+        
+        // dpSwap[i] stores min swaps needed when the ith element swap in case #1 and #2;
+        // dpStay[i] stores min swaps needed when the ith element stay in case #1 and #2;
+        int dpStay[] = new int[n+1];
+        int dpSwap[] = new int[n+1];
+        
+        dpStay[0] = 0;
+        dpSwap[0] = 1;
+        
+        for(int i = 1; i < n; i++){
+            
+            // need to initialize value to integer.max_value, other wise get 0 when request Math.min().
+            dpStay[i] = Integer.MAX_VALUE;
+            dpSwap[i] = Integer.MAX_VALUE;
+            
+            // when case #1 satisfied: (i-1)th/ith elements can stay or swap simultaneously. 
+            if(A[i] > A[i-1] && B[i] > B[i-1]){
+                dpStay[i] = dpStay[i-1];
+                dpSwap[i] = dpSwap[i-1] + 1;
+            }
+            
+            // when case #2 satisfied: ith element can stay when (i-1)th element swap, or vice versa;
+            if(A[i] > B[i-1] && B[i] > A[i-1]){
+                dpSwap[i] = Math.min(dpSwap[i], dpStay[i-1] + 1);
+                dpStay[i] = Math.min(dpStay[i], dpSwap[i-1]);
+            }
+        }
+        
+        return Math.min(dpStay[n-1], dpSwap[n-1]);
+    }
+}
