@@ -1,0 +1,25 @@
+class Solution {
+    public int numTilings(int N) {
+        // dp0[i] stores method to build l-shape boundary at length i;
+        long[] dp0 = new long[N+1];
+        // dp1[i] stores method to build L-shape boundary at length i, i is the length of extruding boundary. note symmetry.
+        long[] dp1 = new long[N+1];
+        int kMod = 1000000007;
+        
+        dp0[1] = 1;
+        dp1[1] = 0;
+        if(N == 1) return (int) dp0[1];
+        dp0[2] = 2;
+        dp1[2] = 1;
+        if(N == 2) return (int) dp0[2];
+
+        for(int i = 3; i <= N; i++){
+            dp0[i] = (dp0[i-1] + dp0[i-2] + 2*dp1[i-1]) % kMod;
+            // note dp1 has two split, extruding at top and extruding at bottom
+            dp1[i] = (dp0[i-2] + dp1[i-1]) % kMod;
+        }
+        
+        return (int) dp0[N];
+        
+    }
+}
