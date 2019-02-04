@@ -1,19 +1,41 @@
 class Solution {
     public int findTargetSumWays(int[] nums, int S) {
+        int offset = IntStream.of(nums).sum();
+        int target = offset + S;
+        int n = offset + offset + 1;
         
-        int sum = IntStream.of(nums).sum();
+        if(S > offset) return 0;
+        
         int len = nums.length;
+        int[] dp = new int[n+1];
+        int[] curr = new int[n+1];
+        dp[offset] = 1;
         
-        if(sum < S || (sum + S)%2 != 0) return 0;
-        
-        int newS = (S + sum)/2;
-        int dp[] = new int[newS + 1];
-        dp[0] = 1;
-        
-        for(int j = 0; j < len; j++){
-            for(int curr = newS; curr >= nums[j]; curr--) dp[curr] = dp[curr] + dp[curr - nums[j]];
+        for(int i = 0; i < len; i++){
+            int num = nums[i];
+            for(int sum = 0; sum <= n; sum++) curr[sum] = 0;
+            for(int sum = num; sum <= n - num; sum++){
+                if(dp[sum] > 0){
+                    curr[sum + num] += dp[sum];
+                    curr[sum - num] += dp[sum];
+                }
+            }
+            for(int sum = 0; sum <= n; sum++) dp[sum] = curr[sum];
         }
+        return dp[target];
+//         int sum = IntStream.of(nums).sum();
+//         int len = nums.length;
         
-        return dp[newS];
+//         if(sum < S || (sum + S)%2 != 0) return 0;
+        
+//         int newS = (S + sum)/2;
+//         int dp[] = new int[newS + 1];
+//         dp[0] = 1;
+        
+//         for(int j = 0; j < len; j++){
+//             for(int curr = newS; curr >= nums[j]; curr--) dp[curr] = dp[curr] + dp[curr - nums[j]];
+//         }
+        
+//         return dp[newS];
     } 
 }
