@@ -1,0 +1,33 @@
+class Solution {
+    public int maxCoins(int[] nums) {
+        
+        // corner case: nums.length = 0, 1, 2
+        if(nums.length == 0) return 0;
+        if(nums.length == 1) return nums[0];
+        if(nums.length == 2) return nums[0] * nums[1] + Math.max(nums[0], nums[1]);
+        
+        int[] newNums = new int[nums.length + 2];
+        newNums[0] = 1;
+        newNums[nums.length + 1] = 1;
+        for(int i = 1; i < nums.length + 1; i++) newNums[i] = nums[i-1];
+        
+        int len = newNums.length;
+        int[][] dp = new int[len][len];
+        // int[i][i] stores max coins collected with ith to jth balloons without breaking i and j
+        
+        // initialization for case i=j
+        // for(int i = 0; i < len; i++) dp[i][i] = 1;
+        
+        // dp
+        for(int l = 2; l < len; l++){
+            for(int i = 0; i < len-l; i++){
+                for(int j = 1; j < l; j++){
+                    dp[i][i+l] = Math.max(dp[i][i+l], dp[i][i+j] + newNums[i]*newNums[i+j]*newNums[i+l] + dp[i+j][i+l]);
+                }
+                // System.out.println("dp" + i + (i+l) + " = " + dp[i][i+l]);
+            }
+        }
+        
+        return dp[0][len-1];
+    }
+}
