@@ -1,0 +1,34 @@
+class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        // 100 mss solution
+        // corner case
+        int len = A.length;
+        if(len < 3) return 0;
+        
+        boolean[][] dp = new boolean[len][len];
+        for(int i = 0; i < len - 1; i++) dp[i][i+1] = true;
+        int count = 0;
+        
+        for(int l = 2; l < len; l++){
+            for(int i = 0; i < len - l; i++){
+                if(dp[i][i+l-1] == true && dp[i+1][i+l] == true && A[i] - A[i+1] == A[i+l-1] - A[i+l]){
+                    count += 1;
+                    dp[i][i+l] = true;
+                }
+            }
+        }
+        
+        return count;
+        
+        // 1 ms solution
+        // int curr = 0, sum = 0;
+        // for (int i=2; i<A.length; i++)
+        //     if (A[i]-A[i-1] == A[i-1]-A[i-2]) {
+        //         curr += 1;
+        //         sum += curr;
+        //     } else {
+        //         curr = 0;
+        //     }
+        // return sum;
+        }
+}
