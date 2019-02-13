@@ -25,6 +25,7 @@ class Solution {
 
 	    while(i < j){
 		    res = Math.max(res, (j - i) * Math.min(height[i], height[j]));
+		    // the area is dominated by lower bound, we loss nothing by moving it;
 		    if(height[i] < height[j]) i++;
 		    else j--;
 	    }
