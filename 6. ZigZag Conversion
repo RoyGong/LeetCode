@@ -1,0 +1,28 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        int k = numRows;
+        
+        if(k == 1) return s;
+        
+        int n = s.length();
+        StringBuffer res = new StringBuffer();
+        
+        for(int level = 0; level < k; level++){
+            if(level == 0 || level == k-1){
+                for(int j = level; j < n; j += 2*(k-1)) res.append(s.charAt(j));
+            }
+            
+            else{
+                int j = level;
+                while(j < n){
+                    res.append(s.charAt(j));
+                    j += 2*(k-level-1);
+                    if(j < n) res.append(s.charAt(j));
+                    j += 2*level;                 
+                }
+            }
+        }
+        
+        return res.toString();
+    }
+}
