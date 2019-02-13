@@ -1,0 +1,82 @@
+class Solution {
+    
+//    good one;
+//    public static String intToRoman(int num) {
+//        String M[] = {"", "M", "MM", "MMM"};
+//        String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
+//        String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
+//        String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+//        return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
+//    }    
+    
+    // my solution .......
+    public String intToRoman(int num) {
+        
+        StringBuffer res = new StringBuffer();
+        
+        // convert 10e3 and above;
+        int i = num / 1000;
+        num = num % 1000;
+        while(i-- > 0) res.append('M');
+        
+        // conver 10e2;
+        if(num >= 900){
+            res.append("CM");
+            num = num - 900;
+        }
+        
+        if(num >= 500){
+            res.append('D');
+            num = num - 500;
+        }
+        
+        if(num >= 400){
+            res.append("CD");
+            num = num - 400;
+        }
+        
+        // conver 10e1;
+        i = num/100;
+        num = num%100;
+        while(i-- > 0) res.append('C');
+        
+        if(num >= 90){
+            res.append("XC");
+            num = num - 90;
+        }
+        
+        if(num >= 50){
+            res.append('L');
+            num = num - 50;
+        }
+        
+        if(num >= 40){
+            res.append("XL");
+            num = num - 40;
+        }
+        
+        // conver 10e0;
+        i = num/10;
+        num = num%10;
+        while(i-- > 0) res.append('X');
+        
+        if(num >= 9){
+            res.append("IX");
+            num = num - 9;
+        }
+        
+        if(num >= 5){
+            res.append('V');
+            num = num - 5;
+        }
+        
+        if(num >= 4){
+            res.append("IV");
+            num = num - 4;
+        }
+        
+        while(num-- > 0) res.append('I');
+        
+        return res.toString();
+    }
+}
