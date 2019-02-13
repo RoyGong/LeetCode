@@ -1,0 +1,26 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        // corner cases;
+        if(s.length() == 0 || s.length() == 1) return s.length();
+        
+        // HashMap: key = character, value = index of character last occurance;
+        Map<Character, Integer> map = new HashMap<>();
+        // using s.charAt(i) saves little memory than using s.toCharArray;
+        // char[] ch = s.toCharArray();
+        int res = 0;
+        
+        // two pointers stores left bound of current non-duplicate substring and currently explored position;
+        int i = 0;
+        int j = 0;
+        
+        while(i < s.length()){
+            // the left bound of current longest substring is the lefties index the duplicated char occurs;
+            if(map.containsKey(s.charAt(i)) && map.get(s.charAt(i))+1 > j) j = map.get(s.charAt(i)) + 1;
+            // maintains value of char at its last occurance;
+            map.put(s.charAt(i), i);
+            res = Math.max(res,i-j+1);
+            i++;
+        }
+        return res;
+    }
+}
