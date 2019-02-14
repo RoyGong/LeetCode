@@ -1,0 +1,30 @@
+class Solution {
+    
+    char[][] table = new char[][] {{'a', 'b', 'c', '_'}, {'d', 'e', 'f', '_'}, {'g', 'h', 'i', '_'}, {'j', 'k', 'l', '_'}, {'m', 'n', 'o', '_'}, {'p', 'q', 'r', 's'}, {'t', 'u', 'v', '_'}, {'w', 'x', 'y', 'z'}}; 
+    
+    public List<String> letterCombinations(String digits) {
+        
+        List<String> res = new ArrayList<>();
+        StringBuffer curr = new StringBuffer();
+        
+        if(digits.length() == 0) return res;
+        
+        helper(digits, 0, res, curr);
+        
+        return res;
+    }
+    
+    private void helper(String digits, int index, List<String> res, StringBuffer curr){
+        if(index == digits.length()) res.add(curr.toString());
+        else{
+            int dial = (int) digits.charAt(index) - '2';
+            // System.out.println(dial);
+            for(int i = 0; i < 4; i++){
+                if(table[dial][i] == '_') continue;
+                curr.append(table[dial][i]);
+                helper(digits, index + 1, res, curr);
+                curr.delete(index, index+1);
+            }
+        }
+    }
+}
