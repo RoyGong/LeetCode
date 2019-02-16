@@ -1,0 +1,37 @@
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        
+        List<List<Integer>> res = new ArrayList<>();
+        
+        if(nums.length == 0) return res;
+            
+        List<Integer> curr = new ArrayList<>();
+        // to remove duplicates, sorting array is required;
+        Arrays.sort(nums);
+        // a helper array to mark the condition of an element;
+        boolean[] marked = new boolean[nums.length];
+        
+        helper(nums, marked, curr, res);
+        
+        return res;
+    }
+    
+    private void helper(int[] nums, boolean[] marked, List<Integer> curr, List<List<Integer>> res){
+        if(curr.size() == nums.length){
+            res.add(new ArrayList(curr));
+            // System.out.println(curr.toString());
+        }
+        
+        for(int i = 0; i < nums.length; i++){
+            // if an element is used, continue;
+            // if the element with same value is ALREADY USED, continued to avoid duplicates;
+            if(marked[i] == true || (i > 0 && nums[i-1] == nums[i] && marked[i-1] == true)) continue;
+            curr.add(nums[i]);
+            marked[i] = true;
+            helper(nums, marked, curr, res);
+            // System.out.println(res.toString());
+            curr.remove(curr.size()-1);
+            marked[i] = false;
+        }
+    }
+}
