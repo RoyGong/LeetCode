@@ -1,0 +1,38 @@
+class Solution {
+    public String multiply(String num1, String num2) {
+        int n1 = num1.length();
+        int n2 = num2.length();
+        
+        // corner case not work;
+        // if(num1 == "0" || num2 == "0") return "0";
+        
+        // Note: use type Integer instead of int, otherwise cannot use Integer.toString();
+        // use type Integer cannot pass res > int_max;
+        // use type Long may fail for unknown reason;
+        
+        int prd[] = new int[n1 + n2]; 
+        int temp = 0;
+        StringBuffer res = new StringBuffer();
+        
+        for(int i = 0; i < n1; i++){
+            for(int j = 0; j < n2; j++){
+                prd[i+j] += (num2.charAt(j) - '0') * (num1.charAt(i) - '0');
+            }
+        }
+        
+        
+        for(int i = n1 + n2 - 2; i > 0; i--){
+            prd[i-1] += prd[i] /10;
+            prd[i] = prd[i] %10;
+        }
+        
+        if(prd[0] == 0) return "0";
+        if(prd[0] /10 == 1) {
+            res.append('1');
+            prd[0] %= 10;
+        }
+        for(int i = 0; i < n1 + n2 -1; i++) res.append(prd[i]);
+        
+        return res.toString();
+    }
+}
