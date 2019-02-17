@@ -1,0 +1,49 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        boolean res = true;
+        int n = board.length;
+        Set<Integer> curr = new HashSet<>();
+        
+        // Note: since the format of Sudoku is guaranteed, no need to check if number is valid 0 <= temp <= 9. Using Set<Character> is okay;
+        int temp = 0;
+        
+        // check row;
+        for(int i = 0; i < n; i++){
+            curr.clear();
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == '.') continue;
+                temp = board[i][j] - '0';
+                if(curr.contains(temp)) return false;
+                else if(temp >= 0 && temp <= 9) curr.add(temp);
+            }
+        }
+        
+        // check coloum;
+        for(int j = 0; j < n; j++){
+            curr.clear();
+            for(int i = 0; i < n; i++){
+                if(board[i][j] == '.') continue;
+                temp = board[i][j] - '0';
+                if(curr.contains(temp)) return false;
+                else if(temp >= 0 && temp <= 9) curr.add(temp);
+            }
+        }
+        
+        // check sub-boxes;
+        for(int k = 0; k < n; k += 3){
+            for(int l = 0; l < n; l += 3){
+                curr.clear();
+                for(int j = 0; j < n/3; j++){
+                    for(int i = 0; i < n/3; i++){
+                        if(board[i+k][j+l] == '.') continue;
+                        temp = board[i+k][j+l] - '0';
+                        if(curr.contains(temp)) return false;
+                        else if(temp >= 0 && temp <= 9) curr.add(temp);
+                    }
+                }
+            }
+        }
+        
+        return res;
+    }
+}
