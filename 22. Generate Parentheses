@@ -1,0 +1,32 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        StringBuffer curr = new StringBuffer();
+        
+        if(n == 0) return res;
+        helper(n, n, curr, res);
+        
+        return res;
+    }
+    
+    private void helper(int l, int r, StringBuffer curr, List<String> res){
+        if(r == 0){
+            res.add(new String(curr.toString()));
+            // System.out.println(curr.toString());
+        }
+        
+        if(l <= r && l > 0){
+            curr.append('(');
+            helper(l-1, r, curr, res);
+            curr.setLength(curr.length()-1);
+            // System.out.println("l and r are " + l + " and " + r);
+        }
+        
+        if(l < r && l >= 0){
+            curr.append(')');
+            helper(l, r-1, curr, res);
+            curr.setLength(curr.length()-1);
+            // System.out.println("l and r are " + l + " and " + r);
+        }
+    }
+}
