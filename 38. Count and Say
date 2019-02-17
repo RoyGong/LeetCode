@@ -1,0 +1,27 @@
+class Solution {
+    public String countAndSay(int n) {
+        StringBuffer res = new StringBuffer();
+        String pre = new String();
+        int count = 0;
+        
+        if(n == 1) return "1";
+        // if(n == 2) return "11";
+        
+        pre = "1";
+        
+        for(int i = 2; i <= n ; i++){
+            res.setLength(0);
+            for(int k = 0; k < pre.length(); k++){
+                count = 1;
+                while(k < pre.length() - 1 && pre.charAt(k+1) == pre.charAt(k)){
+                    k++;
+                    count++;
+                }
+                res.append(count).append(pre.charAt(k));
+            }
+            pre = res.toString();
+        }
+        
+        return pre;
+    }
+}
