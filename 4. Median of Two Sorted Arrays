@@ -1,0 +1,39 @@
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        if(n1 < n2) return findMedianSortedArrays(nums2, nums1);
+        
+        // now n1 >= n2 is guaranteed;
+        
+        // Note the boundary: set i = n1 - n2; j = n1 + n2; will fail;
+        int i2 = 0;
+        int j2 = 2 * n2;
+        double l1 = 0.0;
+        double r1 = 0.0;
+        double l2 = 0.0;
+        double r2 = 0.0;
+        
+        while(i2 <= j2 ){
+            // mid1 + mid2 = n1 + n2;
+            // l2 is the max element in left half of nums2; r2 is the min element in right half of nums2;
+            int mid2 = (i2 + j2)/2;
+            // if nums1 > nums2 => mid2 = 0 and l2 = int_max;
+            l2 = mid2 == 0 ? Integer.MIN_VALUE : nums2[(mid2 - 1)/2];
+            r2 = mid2 == 2 * n2 ? Integer.MAX_VALUE : nums2[mid2/2];
+            
+            // l1 is the max element in left half of nums1; r1 is the min element in right half of nums1;
+            int mid1 = (n1 + n2) - mid2;
+            l1 = mid1 == 0 ? Integer.MIN_VALUE : nums1[(mid1 - 1)/2];
+            r1 = mid1 == 2 * n1 ? Integer.MAX_VALUE : nums1[mid1/2];
+            
+            // left side of nums1/nums2 are smaller than equals to right side of nums1/nums2;
+            if(l1 <= r2 && l2 <= r1) break;
+            // if too many large elements in left side of nums1, move mid2 to the the right;
+            else if(l1 > r2) i2 = mid2 + 1;
+            // if too many large elements in left side of nums2, move mid2 to the the left;
+            else if(l2 > r1) j2 = mid2 - 1;
+        }       
+        return (Math.max(l1, l2) + Math.min(r1, r2))/2.0;
+    }
+}
