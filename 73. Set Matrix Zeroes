@@ -1,0 +1,30 @@
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int height = matrix.length;
+        int width = matrix[0].length;
+        
+        Set<Integer> row = new HashSet<>();
+        Set<Integer> col = new HashSet<>();
+        
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                if(matrix[i][j] == 0){
+                    if(!row.contains(i)) row.add(i);
+                    if(!col.contains(j)) col.add(j);
+                }
+            }
+        }
+        
+        for(int i = 0; i < height; i++){
+            if(row.contains(i)){
+                for(int j = 0; j < width; j++) matrix[i][j] = 0;
+            }
+        }
+        
+        for(int j = 0; j < width; j++){
+            if(col.contains(j)){
+                for(int i = 0; i < height; i++) matrix[i][j] = 0;
+            }
+        }
+    }
+}
