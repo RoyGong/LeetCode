@@ -1,0 +1,43 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        
+        int l = 0;
+        int r = 0;
+        int match = 0;
+        
+        int d = Integer.MAX_VALUE;
+        int flag = 0;
+        
+        Map<Character, Integer> map = new HashMap<>();
+        for(char ch : t.toCharArray()){
+            if(!map.containsKey(ch)) map.put(ch, 1);
+            else map.replace(ch, map.get(ch) + 1);
+        }
+        
+        while(r < s.length()){
+            // if s not contains ALL element in t, extend the right side boundary of window;
+            if(map.containsKey(s.charAt(r))){
+                map.replace(s.charAt(r), map.get(s.charAt(r)) - 1);
+                if(map.get(s.charAt(r)) >= 0) match++;
+            }
+            r++;
+            
+            // while s contains ALL element in t, tighten the left side boundary of window;
+            while(match == t.length()){
+                
+                if(d >= r - l + 1){
+                    d = r - l + 1;
+                    flag = l;
+                }
+
+                if(map.containsKey(s.charAt(l))){
+                    map.replace(s.charAt(l), map.get(s.charAt(l)) + 1);
+                    if(map.get(s.charAt(l)) > 0) match--;
+                }
+                l++;
+            }
+        }
+        
+        return d == Integer.MAX_VALUE ? new String("") : s.substring(flag, flag + d -1);
+    }
+}
