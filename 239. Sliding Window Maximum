@@ -1,0 +1,38 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        // Note: require linear time;
+        // check corner case;
+        int n = nums.length;
+        if(n == 0 || k <= 0 || k > n) return new int[0];
+        
+        int[] res = new int[n - k + 1];
+        
+        int l = 0;
+        int r = 0;
+        int flag = 0;
+        int max = Integer.MIN_VALUE;
+        
+        while(r < n){
+            // when window size < k, extend right boundary and update min value;
+            if(nums[r] > max){
+                max = nums[r];
+                flag = r;
+            }
+            
+            if(r-l+1 == k ){
+                res[l] = max;
+                l++;
+            }
+            
+            // Be careful of the sequence of set r++ or reset r = l;
+            r++;
+            
+            if(l > flag) {
+                r = l;
+                max = Integer.MIN_VALUE;
+            }         
+        }
+        
+        return res;
+    }
+}
