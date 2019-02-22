@@ -1,5 +1,18 @@
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
+        
+//         int[]count = new int[26];
+//         int[]target = new int[26];
+//         for(char ch : s1.toCharArray()) target[ch - 'a']++;
+//         int l = 0;
+//         int r = 0;
+//         for(; r < s2.length(); r++){
+//             count[s2.charAt(r) -'a']++;
+//             if(r - l + 1 > s1.length()) count[s2.charAt(l++)-'a']--;
+//             if(Arrays.equals(count, target)) return true;
+//         }
+//         return false;
+        
         int n1 = s1.length();
         int n2 = s2.length();
         
