@@ -1,0 +1,45 @@
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        
+        int n = edges.length;
+        UnionFindSet uf = new UnionFindSet(n+1);
+        
+        for(int i = 0; i < n; i++ ){
+            if(!uf.union(edges[i][0], edges[i][1])) return edges[i];
+        }
+        
+        return new int[]{};
+    }
+    
+    private class UnionFindSet{
+        private int[] parent;
+        private int[] rank;
+        
+        public UnionFindSet(int n){
+            if (n < 0) throw new IllegalArgumentException();
+            parent = new int[n];
+            rank = new int[n];
+            for(int i = 0; i < n; i++) parent[i] = i;
+        }
+        
+        public int find(int x){
+            if(x != parent[x]) parent[x] = find(parent[x]);
+            return parent[x];
+        }
+        
+        public boolean union(int x, int y){
+            int rootX = find(x);
+            int rootY = find(y);
+            
+            if(rootX == rootY) return false;
+            
+            if(rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+            else if(rank[rootY] < rank[rootX]) parent[rootY] = rootX;
+            else{
+                parent[rootX] = rootY;
+                rank[rootX]++;
+            }
+            return true;
+        }
+    }
+}
