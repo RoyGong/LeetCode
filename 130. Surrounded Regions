@@ -1,0 +1,60 @@
+class Solution {
+    public void solve(char[][] board) {
+        int h = board.length;
+        if(h == 0) return;
+        int w = board[0].length;
+        
+        UnionFind uf = new UnionFind(h*w + 1);
+        
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                if((i == 0 || i == h-1 || j == 0 || j == w-1) && board[i][j] == 'O') uf.union(i*w + j, h*w);
+                else if(board[i][j] == 'O'){
+                    if(board[i+1][j] == 'O') uf.union(i*w + j, i*w + w + j);
+                    if(board[i-1][j] == 'O') uf.union(i*w + j, i*w - w + j);
+                    if(board[i][j+1] == 'O') uf.union(i*w + j, i*w + j + 1);
+                    if(board[i][j-1] == 'O') uf.union(i*w + j, i*w + j - 1);
+                }
+            }
+        }
+        
+        int live = uf.find(h*w);
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                if(uf.find(i*w + j) != live) board[i][j] = 'X';
+            }
+        }
+    }
+    
+    private class UnionFind{
+        int[] parent;
+        int[] rank;
+        
+        public UnionFind(int n){
+            if(n < 0) throw new IllegalArgumentException();
+            parent = new int[n];
+            rank = new int[n];
+            for(int i = 0; i < n; i++) parent[i] = i;
+        }
+        
+        public int find(int x){
+            if(x != parent[x]) parent[x] = find(parent[x]);
+            return parent[x];
+        }
+        
+        public boolean union(int x, int y){
+            int rootX = find(x);
+            int rootY = find(y);
+            
+            if(rootX == rootY) return false;
+            
+            if(rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+            else if(rank[rootY] < rank[rootX]) parent[rootY] = rootX;
+            else{
+                parent[rootX] = rootY;
+                rank[rootX]++;
+            }
+            return true;
+        }
+    }
+}
