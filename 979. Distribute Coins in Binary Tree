@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    int count = 0;
+    
+    public int distributeCoins(TreeNode root) {
+        // int count = 0;
+        move(root);
+        return count;
+    }
+    
+    private int move(TreeNode node){
+        if(node == null) return 0;
+        int l = move(node.left);
+        int r = move(node.right);
+        count = count + Math.abs(l) + Math.abs(r);
+        // System.out.println(count);
+        return node.val - 1 + l + r;
+    }
+}
