@@ -4,18 +4,25 @@ class Solution {
         
         if(n == 0 || n == 1) return 0;
             
-        int[] hold = new int[n];
-        int[] unhold = new int[n];
+        // int[] hold = new int[n];
+        // int[] unhold = new int[n];
         
-        hold[0] = -prices[0];
-        unhold[0] = 0;
+        // hold[0] = -prices[0];
+        // unhold[0] = 0;
+        
+        int hold = -prices[0];
+        int unhold = 0;
         
         for(int i = 1; i < n; i++){
-            hold[i] = Math.max(hold[i-1], unhold[i-1] - prices[i]);
-            unhold[i] = Math.max(unhold[i-1], hold[i-1] + prices[i]);
+            // hold[i] = Math.max(hold[i-1], unhold[i-1] - prices[i]);
+            // unhold[i] = Math.max(unhold[i-1], hold[i-1] + prices[i]);
+            int temp = hold;
+            hold = Math.max(hold, unhold - prices[i]);
+            unhold = Math.max(unhold, temp + prices[i]);
         }
         
-        return unhold[n-1];
+        // return unhold[n-1];
+        return unhold;
         
         
         // Non-DP thinking: find pairs of price valley and peak, each pair contributes profit to maxProfit;
