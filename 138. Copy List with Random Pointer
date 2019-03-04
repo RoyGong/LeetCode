@@ -1,0 +1,59 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        
+        if(head == null) return null;
+        
+        // Node newHead = head.next;
+        Node newCurr = head.next;
+        Node curr = head;
+        Node next = new Node(0);
+        
+        while(curr != null){
+            next = curr.next;
+            newCurr = new Node(curr.val);
+            curr.next = newCurr;
+            newCurr.next = next;
+            curr = next; 
+        }
+        
+        curr = head;
+        while(curr != null){
+            if(curr.random != null) curr.next.random = curr.random.next;
+            curr = curr.next.next;
+        }
+        
+        
+        Node newHead = head.next;
+        curr = head;
+        newCurr = newHead;
+        Node newNext = new Node(0);
+        while(curr != null){
+            next = curr.next.next;
+            curr.next = next;
+            curr = next;
+            if(newCurr.next != null) {
+                newNext = newCurr.next.next;
+                newCurr.next = newNext;
+                newCurr = newNext;
+            }
+        }
+        
+        return newHead;
+    }
+}
