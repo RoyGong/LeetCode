@@ -1,0 +1,32 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        if(n == 0) return 0;
+        
+        int[] h = new int[n+1];
+        for(int i = 0; i < n; i++) h[i] = heights[i];
+        h[n] = 0;
+        
+        // Note: class Stack => 15 ms; class Deque => 7 ms;
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        int max = 0;
+        
+        for(int r = 0; r < n+1; r++){
+            
+            // maintain the index of element in stack;
+            // if current element > first element in stack, push current element (by index);
+            if(stack.isEmpty() || h[r] >= h[stack.peek()]) stack.push(r);
+            
+            else{
+                int k = stack.pop();
+                if(stack.isEmpty()) max = Math.max(max, r * h[k]);
+                else {
+                    int l = stack.peek();
+                    max = Math.max(max, (r - 1 - l) * h[k]);
+                }
+                r--;
+            }
+        }
+        return max;
+    }
+}
