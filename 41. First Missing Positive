@@ -1,0 +1,45 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        
+        if(n == 0) return 1;
+        
+        // move all positive numbers to the leftside of array, array length is marked as posLen;
+        partition(nums);
+        // System.out.println(Arrays.toString(nums));
+        int posLen = 0;
+        while(posLen < n && nums[posLen] > 0) posLen++;
+        // System.out.println(posLen);
+        
+        
+        // If number m exists, mark nums[m] as negative; if a positive number p is missing, nums[p] will remain positive after all; 
+        for(int i = 0; i < posLen; i++){
+            int index = Math.abs(nums[i]) - 1;
+            // Note: need to if check index < posLen, otherwise failed at case: [1000, -1]; 
+            if(index < posLen) nums[index] = - Math.abs(nums[index]);
+        }
+        
+        // the sign of nums[m] indicates number m exists in the list, return the smallest m with nums[m] remains positive;
+        for(int i = 0; i < posLen; i++){
+            if(nums[i] > 0) return i + 1;
+        }
+        
+        return posLen + 1;
+    }
+    
+    private void partition(int[] nums){
+        int l = 0;
+        int r = nums.length - 1;
+        int temp;
+        
+        while(l < r){
+            if (nums[l] > 0) l++;
+            else if (nums[r] <= 0) r--;
+            else {
+                temp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = temp;
+            }
+        }
+    }
+}
