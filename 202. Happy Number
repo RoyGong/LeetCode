@@ -1,0 +1,19 @@
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> visited = new HashSet<>();
+        int sum = 0;
+        int num = n;
+        while(num != 1){
+            // System.out.println(num);
+            visited.add(num);
+            sum = 0;
+            while(num > 0) {
+                sum += Math.pow(num%10, 2);
+                num /= 10;
+            }
+            if(visited.contains(sum)) return false;
+            num = sum;
+        }
+        return true;
+    }
+}
