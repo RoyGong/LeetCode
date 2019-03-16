@@ -1,0 +1,42 @@
+class MinStack {
+
+    /** initialize your data structure here. */
+    private ArrayDeque stack = new ArrayDeque();
+    private int min = Integer.MAX_VALUE;
+    
+    public MinStack() {
+        
+    }
+    
+    public void push(int x) {
+        // when x <= min, need to store previous min value before update min; 
+        if(x <= min){
+            stack.push(min);
+            min = x;
+        }
+        stack.push(x);
+    }
+    
+    public void pop() {
+        int temp = (int) stack.pop();
+        // if popped value == min, continue to pop the next element (previous min);
+        if(temp == min) min = (int) stack.pop();
+    }
+    
+    public int top() {
+        return (int) stack.peek();
+    }
+    
+    public int getMin() {
+        return min;
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
