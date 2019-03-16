@@ -1,0 +1,16 @@
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int n = haystack.length();
+        int m = needle.length();
+        
+        if(n < m) return -1;
+        if(n == m) return needle.equals(haystack) ? 0 : -1;
+            
+        int i = 0;
+        for(; i <= n - m; i++){
+            // System.out.println(haystack.substring(i, i + m));
+            if(needle.equals(haystack.substring(i, i + m))) return i;
+        }
+        return -1;
+    }
+}
