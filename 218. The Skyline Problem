@@ -1,0 +1,65 @@
+class Solution {
+    
+    public List<int[]> getSkyline(int[][] buildings) {
+        
+        List<int[]> res = new ArrayList<>();
+        
+        // event stores pairs of location and height;
+        // set Li as positive, set Ri as negative;
+        ArrayList<int[]> event = new ArrayList<>();
+        
+        // height stores existing (and overlapping) event;
+        // key = Li/Ri, value = location;
+        TreeMap<Integer, Integer> height = new TreeMap<>();
+        Map<Integer, Integer> dup = new HashMap<>();
+        
+        for(int i = 0; i < buildings.length; i++){
+            event.add(new int[]{buildings[i][0], buildings[i][2]});
+            event.add(new int[]{buildings[i][1], -buildings[i][2]});
+        }
+        
+        // Sort event by location from left to right : event[i][0];
+        Collections.sort(event, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                // Note: comparator determines the sequence of Li event and Ri event;
+                // for multiple events at same location, put Li event before Ri event;
+                if (a[0] == b[0])  return b[1] - a[1];
+                else return a[0] - b[0];
+            }
+        });
+        
+        int n = event.size();
+        int h = 0;
+        int x = 0;
+        height.put(h, x);
+        for(int[] curr : event){
+            
+            x = curr[0];
+            h = curr[1];
+            
+            if(h >= 0){
+                if(h > height.lastKey()) res.add(new int[]{x, h});
+                if(dup.containsKey(h)) dup.put(h, dup.get(h) + 1);
+                else {
+                    height.put(h, x);
+                    dup.put(h, 1);
+                }
+                // System.out.println(h + " : " + dup.get(h) + " @ " + x);
+            }
+            
+            else{
+                h = -h;
+                if(dup.containsKey(h) && dup.get(h) > 1) dup.put(h, dup.get(h) - 1);
+                else height.remove(h);
+                if(h > height.lastKey() ) res.add(new int[]{x, height.lastKey()});
+                // System.out.println(h + " : " + dup.get(h) + " @ " + x);
+            }
+            
+            if(res.get(res.size()-1)[1] == 0) dup.clear();
+        }
+        
+        return res;
+        
+    }
+}
