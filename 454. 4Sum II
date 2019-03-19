@@ -1,0 +1,22 @@
+class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int count = 0;
+        int countAB = 0;
+        
+        for(int a : A){
+            for(int b : B){
+                countAB = map.getOrDefault(a + b, 0);
+                map.put(a + b, countAB + 1);
+            }
+        }
+        
+        for(int c : C){
+            for(int d : D) {
+                if(map.containsKey(-(c + d))) count += map.get(-(c + d));
+            }
+        }
+        
+        return count;
+    }
+}
