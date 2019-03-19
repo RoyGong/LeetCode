@@ -1,0 +1,61 @@
+class MedianFinder {
+
+    /** initialize your data structure here. */    
+    PriorityQueue<Integer> lower;
+    PriorityQueue<Integer> upper;
+    
+    public MedianFinder() {
+        // max heap;
+        lower = new PriorityQueue(Collections.reverseOrder());
+        // min heap;
+        upper = new PriorityQueue();
+    }
+
+//     public void addNum(int num) {
+//         // add new element in lower in O(log(n)) time;
+//         lower.add(num);
+//         // move the largest element in lower to upper in O(log(n)) time;
+//         // this step guarantees lower.max <= upper.min;
+//         upper.add(lower.poll());
+        
+//         // guarantee lower.size() = upper.size() or lower.size() = upper.size() + 1;
+//         if (lower.size() < upper.size())  lower.add(upper.poll());
+//     }
+    
+    boolean isEven = true;
+    
+    public void addNum(int num) {
+        if(lower.isEmpty()) lower.add(num);
+        
+        else if(isEven){
+            if(num <= lower.peek()) lower.add(num);
+            else{
+                upper.add(num);
+                lower.add(upper.poll());
+            }
+        }
+        
+        else{
+            if(num > lower.peek()) upper.add(num);
+            else{
+                lower.add(num);
+                upper.add(lower.poll());
+            }
+        }
+        
+        isEven = !isEven;
+    }
+
+    public double findMedian() {
+        // if (upper.size() == lower.size()) return (upper.peek() + lower.peek()) / 2.0;
+        if (isEven) return (upper.peek() + lower.peek()) / 2.0;
+        return (double) lower.peek();
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
