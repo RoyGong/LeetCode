@@ -1,0 +1,106 @@
+class LRUCache {
+    
+    /**
+    * Helper class: doubly linkedlist with popTail and moveToHead function in O(1) time complexity;
+    */
+ 
+    class Node {
+        int key;
+        int val;
+        Node pre;
+        Node post;
+    }
+
+    private void addNode(Node node) {
+    
+    node.pre = head;
+    node.post = head.post;
+
+    head.post.pre = node;
+    head.post = node;
+    }
+
+    private void removeNode(Node node){
+        Node pre = node.pre;
+        Node post = node.post;
+
+        pre.post = post;
+        post.pre = pre;
+    }
+
+    private void moveToHead(Node node){
+        this.removeNode(node);
+        this.addNode(node);
+    }
+
+    private Node popTail(){
+        Node res = tail.pre;
+        this.removeNode(res);
+        return res;
+    } 
+    
+    
+    
+    private Map<Integer, Node> map = new HashMap<>();
+    
+    private int count;
+    private int capacity;
+    
+    private Node head;
+    private Node tail;
+    
+    public LRUCache(int capacity) {
+        this.count = 0;
+        this.capacity = capacity;
+
+        head = new Node();
+        tail = new Node();
+        
+        head.pre = null;
+        head.post = tail;
+        
+        tail.pre = head;
+        tail.post = null; 
+    }
+    
+    public int get(int key) {
+        if(!map.containsKey(key)) return -1;
+        
+        Node node = map.get(key);
+        this.moveToHead(node);
+        return node.val;
+    }
+    
+    public void put(int key, int val) {
+        
+        if(map.containsKey(key)){
+            Node node = map.get(key); 
+            node.val = val;
+            this.moveToHead(node);
+        }
+        
+        else{
+            count += 1;
+            
+            Node node = new Node();
+            node.key = key;
+            node.val = val;
+        
+            this.map.put(key, node);
+            this.addNode(node);
+            
+            if(count > capacity){
+                Node tail = this.popTail();
+                this.map.remove(tail.key);
+                count -= 1;
+            }
+        }
+    } 
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
