@@ -1,0 +1,16 @@
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res = 0;
+        for(int i = 0; i < 33; i++){
+            // System.out.println(n);
+            
+            // res += n%2 not work for case 11111111111111111111111111111101;
+            res += n & 1;
+            
+            // Note >>> is unsigned bit shift and >> is signed bit shift;
+            n = n >>> 1;
+        }
+        return res;
+    }
+}
