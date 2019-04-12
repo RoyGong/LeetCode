@@ -1,0 +1,36 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] preq = new int[numCourses];   // stores # of prerequisites for each todo courses;
+        int[][] map = new int[numCourses][numCourses];  // map[todo][done];
+        
+        for(int[] each : prerequisites){
+            if(map[each[0]][each[1]] == 0) preq[each[0]]++;
+            map[each[0]][each[1]] = 1;
+        }
+        
+        Queue<Integer> q = new LinkedList();
+        int[] res = new int[numCourses];
+        int index = 0;
+        for(int i = 0; i < numCourses; i++){
+            if(preq[i] == 0) {
+                q.offer(i);
+                res[index++] = i;
+            }
+        }
+        
+        while(!q.isEmpty()){
+            int done = q.poll();
+            for(int i = 0; i < numCourses; i++){
+                if(map[i][done] == 1){
+                    preq[i]--;
+                    if(preq[i] == 0) {
+                        q.offer(i);
+                        res[index++] = i;
+                    }
+                }
+            }
+        }
+        
+        return index == numCourses ? res : new int[0];
+    }
+}
